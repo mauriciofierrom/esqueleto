@@ -50,9 +50,9 @@ instance (SqlSelect a r, ToAlias a, ToAliasReference a) => ToSqlSetOperation (Sq
     toSqlSetOperation subquery =
         SqlSetOperation $ \p -> do
             (ret, sideData) <- Q $ W.censor (\_ -> mempty) $ W.listen $ unQ subquery
-            state <- Q $ lift S.get
+            -- state <- Q $ lift S.get
             aliasedValue <- toAlias ret
-            Q $ lift $ S.put state
+            -- Q $ lift $ S.put state
             let aliasedQuery = Q $ W.WriterT $ pure (aliasedValue, sideData)
             let p' =
                   case p of
